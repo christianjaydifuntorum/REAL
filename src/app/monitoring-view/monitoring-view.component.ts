@@ -41,19 +41,23 @@ export class MonitoringViewComponent implements OnInit {
 
   ngOnInit() {
     this.getAllMonitoringView();
-    //this.monitoringService.createMonitoringView();
+    this.getLatestMonitoringView();
   }
 
   getAllMonitoringView() {
     this.monitoringService.getAllMonitoringView().snapshotChanges().subscribe({
-      next: (dataList: any) => {
-        if (dataList) {
-          this.monitoringViewList = [];
-        }
-        dataList.forEach((data: any) => {
-          this.monitoringViewList.unshift(data.payload.toJSON() as IMonitoringView);
-          this.monitoringView = this.monitoringViewList[0];
-        });
+      next: (data: any) => {
+        this.monitoringViewList = data;
+      },
+      error: (err) => { },
+      complete: () => { }
+    });
+  }
+
+  getLatestMonitoringView(): void{
+    this.monitoringService.getLatestMonitoringView().subscribe({
+      next: (data: any) => {
+        this.monitoringView = data;
       },
       error: (err) => { },
       complete: () => { }
