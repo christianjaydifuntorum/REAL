@@ -42,7 +42,8 @@
 					</tr>
 					<tr>
 						<td>Power Factor</td>
-						<td [ngClass]="getPowerFactorClass(monitoringView.power_factor)">{{ monitoringView.power_factor }}</td>
+						<td [ngClass]="getPowerFactorClass(monitoringView.power_factor)">{{ monitoringView.power_factor
+							}}</td>
 					</tr>
 					<tr>
 						<td>Phase Angle</td>
@@ -101,38 +102,34 @@
 		</div>
 	</div>
 
-	<!-- Filters -->
+	<!-- Filters Section -->
 	<div class="filters mt-4">
-		<!-- First Row: Date Filters -->
+		<!-- Date Filter -->
 		<div class="filter-row">
 			<div class="filter-item">
-				<label for="startDate">Start Date:</label>
-				<input type="date" id="startDate" [(ngModel)]="startDate" (change)="applyFilters()" />
-			</div>
-			<div class="filter-item">
-				<label for="endDate">End Date:</label>
-				<input type="date" id="endDate" [(ngModel)]="endDate" (change)="applyFilters()" />
+				<label for="filterDate">Select Date:</label>
+				<input type="date" id="filterDate" [(ngModel)]="filterDate" />
 			</div>
 		</div>
 
-		<!-- Second Row: Time Filters -->
+		<!-- Time Filters -->
 		<div class="filter-row">
 			<div class="filter-item">
 				<label for="startTime">Start Time:</label>
-				<input type="time" id="startTime" [(ngModel)]="startTime" (change)="applyFilters()" />
+				<input type="time" id="startTime" [(ngModel)]="startTime" />
 			</div>
 			<div class="filter-item">
 				<label for="endTime">End Time:</label>
-				<input type="time" id="endTime" [(ngModel)]="endTime" (change)="applyFilters()" />
+				<input type="time" id="endTime" [(ngModel)]="endTime" />
 			</div>
 		</div>
 
-		<!-- Button Row -->
-		<div class="button-row">
-			<button class="btn btn-primary small" (click)="applyFilters()">Refresh</button>
-			<button class="btn btn-secondary small" (click)="clearFilters()">Clear</button>
-		</div>
+		<!-- Filter Button -->
+		<button class="button btn btn-primary mt-3" [disabled]="!filterDate || !startTime || !endTime" (click)="onFilter()">
+			Apply Filter
+		</button>
 	</div>
+
 
 	<!-- Table -->
 	<div class="table-container mt-3">

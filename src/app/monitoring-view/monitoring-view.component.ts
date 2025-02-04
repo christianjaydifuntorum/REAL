@@ -1,16 +1,14 @@
-import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbAlertModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { MonitoringService } from '../core/services/monitoring.service';
 import { IMonitoringView } from '../core/models/monitoring.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-monitoring-view',
-  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './monitoring-view.component.html',
-  styleUrl: './monitoring-view.component.css'
+  styleUrls: ['./monitoring-view.component.css']
 })
 export class MonitoringViewComponent implements OnInit {
   filteredMonitoringViewList: IMonitoringView[] = [];
@@ -27,71 +25,46 @@ export class MonitoringViewComponent implements OnInit {
     power_factor: 0,
     voltage_V: 0,
   };
-  ;
+
   inputCost: any = 0;
   consumptionKwh: any = 0;
-  startDate: string = '';
-  endDate: string = '';
+  filterDate: string = '';
   startTime: string = '';
   endTime: string = '';
   selectedEnergy!: number;
 
-  constructor(private monitoringService: MonitoringService) {
+  constructor(private monitoringService: MonitoringService) { this.getLatestMonitoringView();}
+
+  ngOnInit(): void {
+    this
   }
 
-  ngOnInit() {
-    this.getAllMonitoringView();
-    this.getLatestMonitoringView();
-  }
-
-  getAllMonitoringView() {
-    this.monitoringService.getAllMonitoringView().snapshotChanges().subscribe({
-      next: (data: any) => {
-        this.monitoringViewList = data;
-      },
-      error: (err) => { },
-      complete: () => { }
-    });
-  }
-
-  getLatestMonitoringView(): void{
+  getLatestMonitoringView(): void {
     this.monitoringService.getLatestMonitoringView().subscribe({
       next: (data: any) => {
         this.monitoringView = data;
       },
-      error: (err) => { },
+      error: (err: any) => { },
       complete: () => { }
     });
   }
 
-  updateEnergy() {
-    this.monitoringView.energy_kWh = this.selectedEnergy;
-  }
-
-  applyFilters() {
-    if (!this.startDate || !this.endDate) {
-      this.filteredMonitoringViewList = [...this.monitoringViewList]; // Reset if no filters are applied
-      return;
+  onFilter(): void {
+    if (this.filterDate && this.startTime && this.endTime) {
+      this.loadData();
     }
-
-    const startDateTime = new Date(`${this.startDate}T${this.startTime || '00:00:00'}`);
-    const endDateTime = new Date(`${this.endDate}T${this.endTime || '23:59:59'}`);
-
-    this.filteredMonitoringViewList = this.monitoringViewList.filter((item) => {
-      const [month, day, year] = item.current_date.split('/').map(Number); // Parse date as MM/DD/YYYY
-      const [hours, minutes, seconds] = item.current_time.split(':').map(Number); // Parse military time
-      const itemDateTime = new Date(year, month - 1, day, hours, minutes, seconds); // Create Date object
-
-      return itemDateTime >= startDateTime && itemDateTime <= endDateTime;
-    });
   }
 
-  clearFilters() {
-    this.startDate = '';
-    this.endDate = '';
-    this.startTime = '';
-    this.endTime = '';
-    this.filteredMonitoringViewList = []; // Reset filtered list
+  loadData(): void {
+    // Only load data if filters are applied
+    if (this.filterDate && this.startTime && this.endTime) {
+      this.monitoringService.getFilteredMonitoringView(this.filterDate, this.startTime, this.endTime)
+        .subscribe(data => {
+          this.filteredMonitoringViewList = data;
+        });
+    } else {
+      this.filteredMonitoringViewList = []; // If no filters, don't load data
+    }
   }
 
   calculate() {
@@ -112,7 +85,6 @@ export class MonitoringViewComponent implements OnInit {
     const hours = input.substring(8, 10);
     const minutes = input.substring(10, 12);
 
-    // Format into the required format: DD/MM/YYYY HH:mm
     return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
 
@@ -138,4 +110,9 @@ export class MonitoringViewComponent implements OnInit {
     return '';
   }
 
+  updateEnergy() {
+    this.monitoringView.energy_kWh = this.selectedEnergy;
+  }
+
 }
+

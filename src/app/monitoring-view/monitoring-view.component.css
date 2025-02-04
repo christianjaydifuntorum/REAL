@@ -1,9 +1,4 @@
-/* Ensure all buttons are small with 50% width */
-button, .btn {
-  padding: 0.4rem 1rem; /* Small padding */
-  font-size: 0.875rem;   /* Smaller font size */
-  width: 50%;            /* Make buttons 50% width */
-}
+
 
 /* Filters Section */
 .filters {
