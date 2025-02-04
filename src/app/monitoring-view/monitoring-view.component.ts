@@ -98,13 +98,14 @@ export class MonitoringViewComponent implements OnInit {
   getVoltageClass(voltage: number): string {
     if (voltage === 220) {
       return 'green';
-    } else if ((voltage >= 198 && voltage < 220) || (voltage > 220 && voltage < 242)) {
+    } else if ((voltage >= 198 && voltage < 220) || (voltage > 220 && voltage <= 242)) {
       return 'yellow';
-    } else {
+    } else if (voltage < 198 || voltage > 242) {
       return 'red';
     }
+    return '';
   }
-  
+
 
   getPowerFactorClass(power: number): string {
     if (power >= 0.95 && power <= 1) {
