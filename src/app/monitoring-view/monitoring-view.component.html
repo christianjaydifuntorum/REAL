@@ -125,13 +125,14 @@
 		</div>
 
 		<!-- Filter Button -->
-		<button class="button btn btn-primary mt-3" [disabled]="!filterDate || !startTime || !endTime" (click)="onFilter()">
+		<button class="button btn btn-primary mt-3" [disabled]="!filterDate || !startTime || !endTime"
+			(click)="onFilter()">
 			Apply Filter
 		</button>
 	</div>
 
 
-	<!--Second Table -->
+	<!-- Second Table -->
 	<div class="table-container mt-3">
 		<table class="table table-striped table-bordered">
 			<thead>
@@ -146,7 +147,19 @@
 					<th>Energy (kWh)</th>
 				</tr>
 			</thead>
-			<tbody>
+			<!-- Show loading message -->
+			<tbody *ngIf="loading">
+				<tr>
+					<td colspan="8" class="text-center">
+						Loading data, please wait...
+						<div class="spinner-border text-primary" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+			<!-- Show data when loaded -->
+			<tbody *ngIf="!loading">
 				<tr *ngFor="let data of filteredMonitoringViewList">
 					<td>{{ data.current_date + ' ' + data.current_time }}</td>
 					<td [ngClass]="getVoltageClass(data.voltage_V)">{{ data.voltage_V }} V</td>
@@ -160,4 +173,5 @@
 			</tbody>
 		</table>
 	</div>
+
 </div>

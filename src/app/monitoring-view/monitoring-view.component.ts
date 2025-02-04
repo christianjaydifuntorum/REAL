@@ -25,7 +25,7 @@ export class MonitoringViewComponent implements OnInit {
     power_factor: 0,
     voltage_V: 0,
   };
-
+  loading: boolean = false;
   inputCost: any = 0;
   consumptionKwh: any = 0;
   filterDate: string = '';
@@ -56,14 +56,21 @@ export class MonitoringViewComponent implements OnInit {
   }
 
   loadData(): void {
-    // Only load data if filters are applied
     if (this.filterDate && this.startTime && this.endTime) {
+      this.loading = true; // Show loading indicator
+
       this.monitoringService.getFilteredMonitoringView(this.filterDate, this.startTime, this.endTime)
-        .subscribe(data => {
-          this.filteredMonitoringViewList = data;
+        .subscribe({
+          next: (data) => {
+            this.filteredMonitoringViewList = data;
+            this.loading = false; // Hide loading indicator
+          },
+          error: () => {
+            this.loading = false; // Hide loading indicator even if there’s an error
+          }
         });
     } else {
-      this.filteredMonitoringViewList = []; // If no filters, don't load data
+      this.filteredMonitoringViewList = [];
     }
   }
 
