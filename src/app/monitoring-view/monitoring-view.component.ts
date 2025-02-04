@@ -33,10 +33,10 @@ export class MonitoringViewComponent implements OnInit {
   endTime: string = '';
   selectedEnergy!: number;
 
-  constructor(private monitoringService: MonitoringService) { this.getLatestMonitoringView();}
+  constructor(private monitoringService: MonitoringService) { }
 
   ngOnInit(): void {
-    this
+    this.getLatestMonitoringView();
   }
 
   getLatestMonitoringView(): void {
