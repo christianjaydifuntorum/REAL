@@ -26,7 +26,7 @@
 					</tr>
 					<tr>
 						<td>Voltage</td>
-						<td [ngClass]="getVoltageClass(monitoringView.voltage_V)">{{ monitoringView.voltage_V }} V</td>
+						<td [ngClass]="getVoltageClass(monitoringView.voltage_V)">{{ monitoringView.voltage_V | number:'1.2-2' }} V</td>
 					</tr>
 					<tr>
 						<td>Current</td>
@@ -47,7 +47,7 @@
 					</tr>
 					<tr>
 						<td>Phase Angle</td>
-						<td>{{ monitoringView.phase_angle_deg }} °</td>
+						<td>{{ monitoringView.phase_angle_deg | number:'1.2-2' }} °</td>
 					</tr>
 				</tbody>
 			</table>
@@ -197,13 +197,13 @@
 			<tbody *ngIf="!loading">
 				<tr *ngFor="let data of filteredMonitoringViewList">
 					<td>{{ data.current_date + ' ' + data.current_time }}</td>
-					<td [ngClass]="getVoltageClass(data.voltage_V)">{{ data.voltage_V }} V</td>
+					<td [ngClass]="getVoltageClass(data.voltage_V)">{{ data.voltage_V | number:'1.2-2' }} V</td>
 					<td>{{ data.current_A }} A</td>
 					<td [ngClass]="getPowerFactorClass(data.power_factor)">{{ data.power_factor }}</td>
 					<td>{{ data.frequency_Hz }} Hz</td>
-					<td>{{ data.phase_angle_deg }}°</td>
+					<td>{{ data.phase_angle_deg | number:'1.2-2' }}°</td>
 					<td>{{ data.active_power_W }} W</td>
-					<td>{{ data.energy_kWh }} kWh</td>
+					<td>{{ data.energy_kWh | number:'1.2-2' }} kWh</td>
 				</tr>
 			</tbody>
 		</table>
