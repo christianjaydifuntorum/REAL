@@ -38,7 +38,7 @@
 					</tr>
 					<tr>
 						<td>Active Power</td>
-						<td>{{ monitoringView.active_power_W }} KW</td>
+						<td>{{ monitoringView.active_power_W }} kW</td>
 					</tr>
 					<tr>
 						<td>Power Factor</td>
@@ -66,8 +66,8 @@
 						<td>Energy Used</td>
 						<td>
 							<select class="wider-dropdown" [(ngModel)]="selectedEnergy" (change)="updateEnergy()">
-								<option *ngFor="let data of filteredMonitoringViewList" [value]="data.energy_kWh">
-									{{ data.energy_kWh }} kWh
+								<option *ngFor="let energy_kWh of uniqueEnergyList" [value]="energy_kWh">
+									{{ energy_kWh }} kWh
 								</option>
 							</select>
 						</td>
@@ -76,8 +76,8 @@
 						<td>Input Cost Per kWh</td>
 						<td>
 							<div class="input-group">
-								<input type="number" class="form-control" placeholder="Unit Value kWh"
-									[(ngModel)]="inputCost" name="inputCost">
+								<input min="0" type="number" class="form-control" placeholder="Unit Value kWh"
+									[(ngModel)]="inputCost" name="inputCost" (keydown)="preventInvalidInput($event)">
 								<button class="btn btn-sm btn-primary" (click)="calculate()">Send</button>
 							</div>
 						</td>
@@ -92,7 +92,7 @@
 						<td>Consumption in PHP</td>
 						<td>
 							<div class="d-flex justify-content-between align-items-center">
-								<span>{{ consumptionKwh }}</span>
+								<span>{{ consumptionKwh | number:'1.2-2' }}</span>
 								<button class="btn btn-sm btn-secondary" (click)="resetConsumption()">Reset</button>
 							</div>
 						</td>

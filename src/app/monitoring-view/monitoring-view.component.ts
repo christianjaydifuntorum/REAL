@@ -31,12 +31,19 @@ export class MonitoringViewComponent implements OnInit {
   filterDate: string = '';
   startTime: string = '';
   endTime: string = '';
-  selectedEnergy!: number;
+  selectedEnergy: number = 0;
+  uniqueEnergyList: number[] = [];
 
   constructor(private monitoringService: MonitoringService) { }
 
   ngOnInit(): void {
     this.getLatestMonitoringView();
+  }
+
+  preventInvalidInput(event: KeyboardEvent) {
+    if (event.key === 'e' || event.key === '-' || event.key === '+') {
+      event.preventDefault();
+    }
   }
 
   getLatestMonitoringView(): void {
@@ -63,6 +70,7 @@ export class MonitoringViewComponent implements OnInit {
         .subscribe({
           next: (data) => {
             this.filteredMonitoringViewList = data;
+            this.uniqueEnergyList  = [...new Set(this.filteredMonitoringViewList.map(item => item.energy_kWh))]; //Remove duplicate energy_kWh
             this.loading = false; // Hide loading indicator
           },
           error: () => {
