@@ -97,6 +97,41 @@
 							</div>
 						</td>
 					</tr>
+					<!-- Consumption in PHP -->
+					<tr>
+						<td>Consumption in PHP</td>
+						<td>
+							<div class="d-flex justify-content-between align-items-center">
+								<span>{{ consumptionKwh | number:'1.2-2' }}</span>
+								<button class="btn btn-sm btn-secondary" (click)="resetConsumption()">Reset</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered legend-table mt-3">
+				<thead>
+					<tr>
+						<th colspan="2" class="text-center">Legend</th>
+					</tr>
+					<tr>
+						<th>Status</th>
+						<th>Color</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Ideal</td>
+						<td class="green">Green</td>
+					</tr>
+					<tr>
+						<td>Fair</td>
+						<td class="yellow">Yellow</td>
+					</tr>
+					<tr>
+						<td>Poor</td>
+						<td class="red">Red</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

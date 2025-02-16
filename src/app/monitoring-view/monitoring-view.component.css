@@ -125,3 +125,29 @@ tbody tr {
     min-width: 600px;  /* Set a minimum width for the table to force scrolling */
   }
 }
+
+.legend-table th, .legend-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 4px;
+}
+
+.legend-table td.green {
+  background-color: #57a857;
+  color: white;
+}
+
+.legend-table td.yellow {
+  background-color: gold;
+  color: black;
+}
+
+.legend-table td.red {
+  background-color: red;
+  color: white;
+}
+
+/* Legend Table - Smaller Font */
+.legend-table {
+  text-align: center;
+}
