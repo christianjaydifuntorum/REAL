@@ -97,16 +97,6 @@
 							</div>
 						</td>
 					</tr>
-					<!-- Consumption in PHP -->
-					<tr>
-						<td>Consumption in PHP</td>
-						<td>
-							<div class="d-flex justify-content-between align-items-center">
-								<span>{{ consumptionKwh | number:'1.2-2' }}</span>
-								<button class="btn btn-sm btn-secondary" (click)="resetConsumption()">Reset</button>
-							</div>
-						</td>
-					</tr>
 				</tbody>
 			</table>
 			<table class="table table-bordered legend-table mt-3">
@@ -164,6 +154,16 @@
 			(click)="onFilter()">
 			Apply Filter
 		</button>
+		<button class="button btn btn-warning mt" (click)="downloadPDF()"
+			[disabled]="filteredMonitoringViewList.length === 0 || pdfLoading">
+			<span *ngIf="pdfLoading">
+				<div class="spinner-border spinner-border-sm text-light" role="status">
+					<span class="visually-hidden">Generating...</span>
+				</div> Generating...
+			</span>
+			<span *ngIf="!pdfLoading">Download PDF</span>
+		</button>
+
 	</div>
 
 
@@ -172,7 +172,7 @@
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th>DateTime</th>
+					<th>Date & Time</th>
 					<th>Voltage (V)</th>
 					<th>Current (A)</th>
 					<th>Power Factor</th>

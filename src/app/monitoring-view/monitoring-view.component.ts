@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { MonitoringService } from '../core/services/monitoring.service';
 import { IMonitoringView } from '../core/models/monitoring.model';
 import { CommonModule } from '@angular/common';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-monitoring-view',
@@ -33,6 +35,7 @@ export class MonitoringViewComponent implements OnInit {
   endTime: string = '';
   selectedEnergy: number = 0;
   uniqueEnergyList: number[] = [];
+  pdfLoading: boolean = false;
 
   constructor(private monitoringService: MonitoringService) { }
 
@@ -129,6 +132,56 @@ export class MonitoringViewComponent implements OnInit {
   updateEnergy() {
     this.monitoringView.energy_kWh = this.selectedEnergy;
   }
+
+  downloadPDF() {
+    if (this.filteredMonitoringViewList.length === 0) return; // Prevent download if no data
+  
+    this.pdfLoading = true; // Start loading
+  
+    setTimeout(() => { // Simulate loading effect
+      const doc = new jsPDF();
+      
+      // Title
+      doc.setFontSize(16);
+      doc.text('Electrical Monitoring Data', 14, 10);
+  
+      // Table Headers
+      const headers = [[
+        'Date & Time', 
+        'Voltage (V)', 
+        'Current (A)', 
+        'Power Factor', 
+        'Frequency (Hz)', 
+        'Phase Angle (°)', 
+        'Active Power (W)', 
+        'Energy (kWh)']];
+  
+      // Table Data
+      const data = this.filteredMonitoringViewList.map(item => [
+        `${item.current_date} ${item.current_time}`,
+        item.voltage_V,
+        item.current_A,
+        item.power_factor,
+        item.frequency_Hz,
+        item.phase_angle_deg,
+        item.active_power_W,
+        item.energy_kWh
+      ]);
+  
+      // Generate Table
+      autoTable(doc, {
+        head: headers,
+        body: data,
+        startY: 20
+      });
+  
+      // Save PDF
+      doc.save('Electrical_Monitoring_Data.pdf');
+  
+      this.pdfLoading = false; // Stop loading after PDF is generated
+    }, 1500); // Simulate a short delay
+  }  
+  
 
 }
 
